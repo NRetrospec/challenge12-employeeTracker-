@@ -25,7 +25,7 @@ function mainMenu () {
       type:"list",
       message: "What would you like to do?",
       name:"menu",
-      choices:["view all departments", "view all roles", "view all employees", "add a department", "add a role", "add an employee", " update an employee role"]
+      choices:["view all departments", "view all roles", "view all employees", "add a department", "add a role", "add an employee", "update an employee role"]
     }
   ])
   .then(response => {
@@ -106,7 +106,6 @@ function addDepartment(){
 }
 
 function addRole(){
-  // First get all departments for the choices
   pool.query("SELECT * FROM department", (err, {rows}) => {
     if (err) throw err;
     
@@ -146,7 +145,6 @@ function addRole(){
 }
 
 function addEmployee(){
-  // First get all roles and employees for the choices
   pool.query("SELECT * FROM role", (err, {rows: roles}) => {
     if (err) throw err;
     
@@ -203,7 +201,6 @@ function addEmployee(){
 }
 
 function updateEmployeeRole() {
-  // First get all roles and employees for the choices
   pool.query("SELECT * FROM employee", (err, employees) => {
     if (err) throw err;
     
@@ -215,7 +212,7 @@ function updateEmployeeRole() {
           type: "list",
           message: "Which employee's role do you want to update?",
           name: "employee_id",
-          choices: employees.map(emp => ({
+          choices: employees.rows.map(emp =>({
             name: `${emp.first_name} ${emp.last_name}`,
             value: emp.id
           }))
@@ -224,7 +221,7 @@ function updateEmployeeRole() {
           type: "list",
           message: "Which role do you want to assign to the selected employee?",
           name: "role_id",
-          choices: roles.map(role => ({
+          choices: roles.rows.map(role => ({
             name: role.title,
             value: role.id
           }))
@@ -232,7 +229,7 @@ function updateEmployeeRole() {
       ])
       .then(response => {
         pool.query(
-          "UPDATE employee SET role_id = ? WHERE id = ?",
+          "UPDATE employee SET role_id = $1 WHERE id = $2",
           [response.role_id, response.employee_id],
           (err) => {
             if (err) throw err;

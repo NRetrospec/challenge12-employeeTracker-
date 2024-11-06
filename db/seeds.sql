@@ -30,3 +30,24 @@ VALUES('John', 'Doe', 1),
       UPDATE employee SET manager_id =3 WHERE id =4;
       UPDATE employee SET manager_id =5 WHERE id =6;
       UPDATE employee SET manager_id =7 WHERE id =8;
+
+
+const seededDatabase = [
+      {
+            first_name: "John",
+            last_name: "Doe",
+            role_id: 1,
+      },
+
+      {
+            first_name: "Mike",
+            last_name: "Chan",
+            role_id: 2,
+      },
+      
+      {
+            first_name: "Ashley",
+            last_name: "Rodriguez",
+            role_id: 3
+      },
+]
